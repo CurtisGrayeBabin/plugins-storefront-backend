@@ -165,7 +165,7 @@ var Orders = /** @class */ (function () {
             });
         });
     };
-    Orders.prototype.addPlugin = function (order_id, product_id, quantity) {
+    Orders.prototype.addPlugin = function (order_id, plugin_id, quantity) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, err_6;
             return __generator(this, function (_a) {
@@ -175,8 +175,8 @@ var Orders = /** @class */ (function () {
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = "INSERT INTO plugins_orders(order_id, product_id, quantity) VALUES ($1,$2,$3) RETURNING *;";
-                        return [4 /*yield*/, conn.query(sql, [order_id, product_id, quantity])];
+                        sql = "INSERT INTO plugins_orders(order_id, plugin_id, quantity) VALUES ($1,$2,$3) RETURNING *;";
+                        return [4 /*yield*/, conn.query(sql, [order_id, plugin_id, quantity])];
                     case 2:
                         result = _a.sent();
                         conn.release();

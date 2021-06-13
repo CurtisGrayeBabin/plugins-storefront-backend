@@ -9,15 +9,15 @@ const user3: User = {first_name:'Adi', last_name:'Body', username:'adi024', pass
 describe("Users Model", ()=>{
 
     beforeAll(async()=>{
-        const addUser1 = await userTable.create(user1);
-        const adduser2 = await userTable.create(user2);
-        const adduser3 = await userTable.create(user3);
-        const addUser4 = await userTable.create(user1);
-        const adduser5 = await userTable.create(user2);
-        const adduser6 = await userTable.create(user3);
-        const addUser7 = await userTable.create(user1);
-        const adduser8 = await userTable.create(user2);
-        const adduser9 = await userTable.create(user3);
+        await userTable.create(user1);
+        await userTable.create(user2);
+        await userTable.create(user3);
+        await userTable.create(user1);
+        await userTable.create(user2);
+        await userTable.create(user3);
+        await userTable.create(user1);
+        await userTable.create(user2);
+        await userTable.create(user3);
     });
 
     // index test
@@ -30,7 +30,8 @@ describe("Users Model", ()=>{
     it('should authenticate 1 user by username and password',async()=>{
         const result = await userTable.authenticate('adi024','asdfasdfasdf');
         const resultIsntNull = result!;
-        expect(resultIsntNull.first_name).toBe('Adi');
+        // receive user, token bundle as a result of authenticate method
+        expect(resultIsntNull.user.first_name).toBe('Adi');
     });
 
     // show test

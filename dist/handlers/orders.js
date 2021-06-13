@@ -149,7 +149,7 @@ var addPlugin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, orders.addPlugin(Number(req.params.id), Number(req.body.product_id), Number(req.body.quantity))];
+                return [4 /*yield*/, orders.addPlugin(Number(req.params.id), Number(req.body.plugin_id), Number(req.body.quantity))];
             case 1:
                 addedProduct = _a.sent();
                 res.json(addedProduct);
@@ -163,9 +163,9 @@ var addPlugin = function (req, res) { return __awaiter(void 0, void 0, void 0, f
     });
 }); };
 var order_routes = function (app) {
-    app.get('/orders', index);
+    app.get('/orders', authorization_1["default"], index);
     app.get('/orders/:id', authorization_1["default"], show);
-    app.post('/orders', create);
+    app.post('/orders', authorization_1["default"], create);
     app.put('/orders/:id', authorization_1["default"], update);
     app["delete"]('/orders/:id', authorization_1["default"], destroy);
     app.post('/orders/:id/plugins', authorization_1["default"], addPlugin);

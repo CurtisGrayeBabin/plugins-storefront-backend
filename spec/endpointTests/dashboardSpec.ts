@@ -4,9 +4,7 @@ import {User} from '../../src/models/users';
 import {Order} from '../../src/models/orders';
 import {Plugin} from '../../src/models/plugins';
 
-const {TEST_TOKEN} = process.env;
-const testToken: string = TEST_TOKEN!;
-const authorizationHeader = {'Authorization':`Bearer ${testToken}`};
+var authorizationHeader: {Authorization: string};
 
 const user1: User = {first_name:'Joe', last_name:'Shmo', username:'jshmo27', pass:'9099d09df9df9df'};
 const user2: User = {first_name:'Christine', last_name:'H', username:'ch96', pass:'sdf78df77'};
@@ -22,18 +20,21 @@ const plugin3: Plugin = {name:"Limiter Unlimited",price:99.99}
 
 const request = supertest(app);
 
-describe('Order endpoint tests', () => {
+describe('Dashboard endpoint tests', () => {
 
     // set up all users for this spec
     beforeAll(async()=>{
+
+        const userCreation = await request.post('/users').send({first_name:'Christine', last_name:'H', username:'ch96', pass:'sdf78df77'});
+        authorizationHeader = {Authorization: 'Bearer '+userCreation.body.token};
 
         await request.post('/users').send(user1);
         await request.post('/users').send(user2);
         await request.post('/users').send(user3);
         
-        await request.post('/orders').send(order1);
-        await request.post('/orders').send(order2);
-        await request.post('/orders').send(order3);
+        await request.post('/orders').send(order1).set(authorizationHeader);
+        await request.post('/orders').send(order2).set(authorizationHeader);
+        await request.post('/orders').send(order3).set(authorizationHeader);
         
         await request.post('/plugins').set(authorizationHeader).send(plugin1);
         await request.post('/plugins').set(authorizationHeader).send(plugin2);
@@ -46,9 +47,10 @@ describe('Order endpoint tests', () => {
         const firstId = Number(index.body[0].id);
 
         const orderFound = await request.get(`/orders/${firstId}`).set(authorizationHeader);
-        const orderFoundStatus = orderFound.body.order_status;
+        const orderFoundOrderStatus = orderFound.body.order_status;
         
-        expect(orderFoundStatus).toBe("completed");
+        expect(orderFound.status).toBe(200);
+        expect(orderFoundOrderStatus).toBe("completed");
     });
 
 });

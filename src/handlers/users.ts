@@ -27,7 +27,10 @@ const create = async(req: Request, res:Response) => {
         const newUser = await userTable.create(u);
         const token = jwt.sign({user: newUser},tokenSecret);
 
-        res.json(token);
+        // required to send new user and associated token with that user
+        const bundledUserAndToken = {user: newUser, token: token}
+
+        res.json(bundledUserAndToken);
     } catch(err) {
         res.status(400).json(err);
     }
@@ -68,7 +71,7 @@ const update = async(req: Request, res:Response) => {
 
 const users_routes = (app: Application) => {
     app.get('/users',index);
-    app.get('/users/:id',show);
+    app.get('/users/:id',verifyAuthToken,show);
     app.post('/users',create);
     app.put('/users/:id',verifyAuthToken,update);
     app.delete('/users/:id',verifyAuthToken,destroy);

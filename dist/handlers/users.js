@@ -65,7 +65,7 @@ var index = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
     });
 }); };
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var u, newUser, token, err_2;
+    var u, newUser, token, bundledUserAndToken, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -80,7 +80,8 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
             case 1:
                 newUser = _a.sent();
                 token = jsonwebtoken_1["default"].sign({ user: newUser }, tokenSecret);
-                res.json(token);
+                bundledUserAndToken = { user: newUser, token: token };
+                res.json(bundledUserAndToken);
                 return [3 /*break*/, 3];
             case 2:
                 err_2 = _a.sent();
@@ -154,7 +155,7 @@ var update = function (req, res) { return __awaiter(void 0, void 0, void 0, func
 }); };
 var users_routes = function (app) {
     app.get('/users', index);
-    app.get('/users/:id', show);
+    app.get('/users/:id', authorization_1["default"], show);
     app.post('/users', create);
     app.put('/users/:id', authorization_1["default"], update);
     app["delete"]('/users/:id', authorization_1["default"], destroy);

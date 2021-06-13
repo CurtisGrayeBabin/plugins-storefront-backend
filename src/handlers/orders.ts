@@ -58,7 +58,7 @@ const update = async(req: Request, res:Response) => {
 
 const addPlugin = async(req: Request, res:Response) => {
     try{
-        const addedProduct = await orders.addPlugin(Number(req.params.id),Number(req.body.product_id),Number(req.body.quantity));
+        const addedProduct = await orders.addPlugin(Number(req.params.id),Number(req.body.plugin_id),Number(req.body.quantity));
         res.json(addedProduct);
     } catch(err) {
         res.status(400).json(err);
@@ -67,9 +67,9 @@ const addPlugin = async(req: Request, res:Response) => {
 
 
 const order_routes = (app: Application) => {
-    app.get('/orders',index);
+    app.get('/orders',verifyAuthToken,index);
     app.get('/orders/:id',verifyAuthToken,show);
-    app.post('/orders',create);
+    app.post('/orders',verifyAuthToken,create);
     app.put('/orders/:id',verifyAuthToken,update);
     app.delete('/orders/:id',verifyAuthToken,destroy);
     app.post('/orders/:id/plugins',verifyAuthToken,addPlugin);

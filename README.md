@@ -44,4 +44,3 @@ ENV=dev
 BCRYPT_PASSWORD=never-gonna-give-you-up
 SALT_ROUNDS=10
 TOKEN_SECRET=memesforlifeforreal
-TEST_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbHVnaW4iOnsiaWQiOjQsIm5hbWUiOiJOZXcgUGx1Z2luIiwicHJpY2UiOiIxMDAwIn0sImlhdCI6MTYyMzAyNzkyM30.h3oYrxikPvwLMeW2REQMaZFUxeaKut0JfPW-lzE_lLY

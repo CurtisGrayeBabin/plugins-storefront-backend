@@ -1,6 +1,10 @@
 // @ts-ignore
 import client from '../database';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+const {TOKEN_SECRET} = process.env;
+
+const tokenSecret: string = TOKEN_SECRET!;
 const {BCRYPT_PASSWORD, SALT_ROUNDS} = process.env;
 
 export type User = {
@@ -63,7 +67,7 @@ export class Users {
         }
     }
 
-    async authenticate(username: string, password: string): Promise<User|null>{
+    async authenticate(username: string, password: string): Promise<{user: User, token: string}|null>{
         // @ts-ignore
         const conn = await client.connect();
         const sql = `SELECT * FROM users WHERE username=$1;`;
@@ -74,7 +78,13 @@ export class Users {
             const user = result.rows[0];
             // if given password matches user password in the table then return user
             if(bcrypt.compareSync(password+BCRYPT_PASSWORD, user.pass)){
-                return user;
+
+                const token = jwt.sign({user: user},tokenSecret);
+
+                // required to send new user and associated token with that user
+                const bundledUserAndToken = {user: user, token: token};
+
+                return bundledUserAndToken;
             }
         }
         // given username doesn't exist OR given password doesn't match actual user password

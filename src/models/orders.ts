@@ -8,7 +8,7 @@ export type Order = {
 
 export type PluginsInOrder = {
     order_id: number,
-    product_id: number,
+    plugin_id: number,
     quantity: number
 };
 
@@ -80,12 +80,12 @@ export class Orders {
         }
     }
 
-    async addPlugin(order_id: number, product_id: number, quantity: number): Promise<PluginsInOrder> {
+    async addPlugin(order_id: number, plugin_id: number, quantity: number): Promise<PluginsInOrder> {
         try{
             // @ts-ignore 
             const conn = await client.connect();
-            const sql = `INSERT INTO plugins_orders(order_id, product_id, quantity) VALUES ($1,$2,$3) RETURNING *;`;
-            const result = await conn.query(sql,[order_id,product_id,quantity]);
+            const sql = `INSERT INTO plugins_orders(order_id, plugin_id, quantity) VALUES ($1,$2,$3) RETURNING *;`;
+            const result = await conn.query(sql,[order_id,plugin_id,quantity]);
             conn.release();
             return result.rows[0];   
         } catch (err) {

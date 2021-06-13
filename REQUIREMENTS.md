@@ -8,14 +8,14 @@
 
 #### Users
 - Index: '/users' [GET]
-- Show: '/users/:id' [GET]
+- Show [token required]: '/users/:id' [GET]
 - Create: '/users' [POST]
 - Edit [token required]: '/users/:id' [PUT]
 - Delete [token required]: '/users/:id' [DELETE]
 
 #### Orders
-- Index: '/orders' [GET]
-- Create: '/orders' [POST]
+- Index [token required]: '/orders' [GET]
+- Create [token required]: '/orders' [POST]
 - Add plugins to order [token required]: '/orders/:id/plugins' [POST]
 - Show current order by user [token required]: '/orders/:id' [GET]
 - Show completed orders by user [token required]: '/orders/:user_id/completed' [GET]

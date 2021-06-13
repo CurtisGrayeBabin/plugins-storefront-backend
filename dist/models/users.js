@@ -43,6 +43,9 @@ exports.Users = void 0;
 // @ts-ignore
 var database_1 = __importDefault(require("../database"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var TOKEN_SECRET = process.env.TOKEN_SECRET;
+var tokenSecret = TOKEN_SECRET;
 var _a = process.env, BCRYPT_PASSWORD = _a.BCRYPT_PASSWORD, SALT_ROUNDS = _a.SALT_ROUNDS;
 var Users = /** @class */ (function () {
     function Users() {
@@ -125,7 +128,7 @@ var Users = /** @class */ (function () {
     };
     Users.prototype.authenticate = function (username, password) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, user;
+            var conn, sql, result, user, token, bundledUserAndToken;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
@@ -140,7 +143,9 @@ var Users = /** @class */ (function () {
                             user = result.rows[0];
                             // if given password matches user password in the table then return user
                             if (bcrypt_1["default"].compareSync(password + BCRYPT_PASSWORD, user.pass)) {
-                                return [2 /*return*/, user];
+                                token = jsonwebtoken_1["default"].sign({ user: user }, tokenSecret);
+                                bundledUserAndToken = { user: user, token: token };
+                                return [2 /*return*/, bundledUserAndToken];
                             }
                         }
                         // given username doesn't exist OR given password doesn't match actual user password
