@@ -1,54 +1,47 @@
-# Storefront Backend Project
+Hello! Here are inital database setup instructions for this project:
 
-## Getting Started
+1. Using psql create the database "plugins_dev" (for manual testing)
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+2. Create the user "plugins_user" with a password of "password123"
 
-## Required Technologies
-Your application must make use of the following libraries:
-- Postgres for the database
-- Node/Express for the application logic
-- dotenv from npm for managing environment variables
-- db-migrate from npm for migrations
-- jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
+3. Grant all privileges to "plugins_user" by running:
+"alter user plugins_user with superuser;" 
+so that model and endpoint testing can occur correctly (allows plugins_user to create and remove the "plugins_test" database with the "npm run test" script)
 
-## Steps to Completion
+Dependencies should be installed with "npm install"
 
-### 1. Plan to Meet Requirements
+The server listens on port 3000 and the databases run locally on port 5432
 
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API. 
 
-Your first task is to read the requirements and update the document with the following:
-- Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.    
-**Example**: A SHOW route: 'blogs/:id' [GET] 
+To run up-migrations:
+ "npm run migup"
 
-- Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.   
-**Example**: You can format this however you like but these types of information should be provided
-Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
+To run down-migrations:
+"npm run migdown"
 
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
+To run server:
+"npm run watch"
 
-### 2.  DB Creation and Migrations
+Tests can be run with:
+"npm run test"
 
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
+The test script runs db-migrate with superuser privileges that should be granted to "plugins_user" from step 3 of the database setup instructions.
 
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
+If an error occurs during testing (socket hang up) then run:
+"npm run dropTestDB" 
+to clear the testing database and re-run 
+"npm run test" 
+to run the tests again.
 
-### 3. Models
+*These are the necessary environment variables (for this project only):*
 
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
-
-### 4. Express Handlers
-
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled. 
-
-### 5. JWTs
-
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
-
-### 6. QA and `README.md`
-
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
-
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+POSTGRES_HOST=127.0.0.1
+POSTGRES_DB=plugins_dev
+POSTGRES_TEST_DB=plugins_test
+POSTGRES_USER=plugins_user
+POSTGRES_PASSWORD=password123
+ENV=dev
+BCRYPT_PASSWORD=never-gonna-give-you-up
+SALT_ROUNDS=10
+TOKEN_SECRET=memesforlifeforreal
+TEST_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbHVnaW4iOnsiaWQiOjQsIm5hbWUiOiJOZXcgUGx1Z2luIiwicHJpY2UiOiIxMDAwIn0sImlhdCI6MTYyMzAyNzkyM30.h3oYrxikPvwLMeW2REQMaZFUxeaKut0JfPW-lzE_lLY

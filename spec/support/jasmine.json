@@ -1,7 +1,13 @@
 {
   "spec_dir": "spec",
   "spec_files": [
-    "../**/tests/*[s]pec.ts"
+    "modelTests/pluginsSpec.ts",
+    "modelTests/usersSpec.ts",
+    "modelTests/ordersSpec.ts",
+    "endpointTests/pluginsSpec.ts",
+    "endpointTests/usersSpec.ts",
+    "endpointTests/ordersSpec.ts",
+    "endpointTests/dashboardSpec.ts"
   ],
   "helpers": [
     "helpers/**/*.js"

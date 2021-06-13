@@ -1,42 +1,50 @@
-# API Requirements
-The company stakeholders want to create an online storefront to showcase their great product ideas. Users need to be able to browse an index of all products, see the specifics of a single product, and add products to an order that they can view in a cart page. You have been tasked with building the API that will support this application, and your coworker is building the frontend.
-
-These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
-
 ## API Endpoints
 #### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+- Index '/plugins' [GET] 
+- Show: '/plugins/:id' [GET] 
+- Create [token required]: '/plugins' [POST]
+- Edit [token required]: '/plugins/:id' [PUT]
+- Delete [token required]: '/plugins/:id' [DELETE]
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Index: '/users' [GET]
+- Show: '/users/:id' [GET]
+- Create: '/users' [POST]
+- Edit [token required]: '/users/:id' [PUT]
+- Delete [token required]: '/users/:id' [DELETE]
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Index: '/orders' [GET]
+- Create: '/orders' [POST]
+- Add plugins to order [token required]: '/orders/:id/plugins' [POST]
+- Show current order by user [token required]: '/orders/:id' [GET]
+- Show completed orders by user [token required]: '/orders/:user_id/completed' [GET]
+- Edit [token required]: '/orders/:id' [PUT]
+- Delete [token required]: '/orders/:id' [DELETE]
 
 ## Data Shapes
 #### Product
--  id
+- id
 - name
 - price
-- [OPTIONAL] category
+
+Table: plugins (id:integer, name:varchar, price:decimal)
 
 #### User
 - id
-- firstName
-- lastName
-- password
+- first_name
+- last_name
+- username
+- pass
+
+Table: users (id:integer, first_name:varchar, last_name:varchar, username: varchar, pass:varchar)
 
 #### Orders
 - id
-- id of each product in the order
-- quantity of each product in the order
+- quantity
 - user_id
-- status of order (active or complete)
+- status (open or completed)
 
+Table 1: orders (id:integer, user_id:integer[foreign key to users table], order_status:varchar)
+
+Table 2: plugins_orders (id:integer, order_id:integer[foreign key to orders table], product_id:integer[foreign key to plugins table], quantity:integer)
